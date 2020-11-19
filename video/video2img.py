@@ -3,14 +3,14 @@ import os, sys, getopt
 import glob
 
 def usage():
-    print 'python video2img.py -i <video file>'
+    print('python video2img.py -i <video file>')
 
 def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hi:v", ["help", "input="])
     except getopt.GetoptError as err:
-        # print help information and exit:
-        print(err)  # will print something like "option -a not recognized"
+        # print(help information and exit:)
+        print(err)  # will print(something like "option -a not recognized")
         usage()
         sys.exit(2)
     file_name = None
@@ -36,7 +36,7 @@ def main():
       success,image = vidcap.read()
       if not success:
           break
-      print 'Read a new frame: {}'.format(count)
+      print('Read a new frame: {}'.format(count))
       cv2.imwrite(os.path.join('input', 'frame{}.jpg'.format(count)), image)     # save frame as JPEG file
       count += 1
 

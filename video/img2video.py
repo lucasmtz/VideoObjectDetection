@@ -3,14 +3,14 @@ import os, sys, getopt
 import glob
 
 def usage():
-    print 'python img2video.py -i <image folder>'
+    print('python img2video.py -i <image folder>')
 
 def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hi:v", ["help", "input="])
     except getopt.GetoptError as err:
-        # print help information and exit:
-        print(err)  # will print something like "option -a not recognized"
+        # print(help information and exit:)
+        print(err)  # will print(something like "option -a not recognized")
         usage()
         sys.exit(2)
     image_folder = None
@@ -27,7 +27,7 @@ def main():
             assert False, "unhandled option"
 
     if not os.path.exists('output'):
-        print 'no output detected'
+        print('no output detected')
         sys.exit(2)
 
     video_name = 'output.mp4'

@@ -131,8 +131,8 @@ def detect_img(filename, cfg="cfg/tiny-yolo.cfg", weights="tiny-yolo.weights", d
     start=time.time()
     r = detect(net, meta, filename, thresh=thresh, hier_thresh=hier_thresh, nms=nms)
     end=time.time()
-    print 'detection time:{:.4f}'.format(end-start)
-    print r
+    print('detection time:{:.4f}'.format(end-start))
+    print(r)
     return r
 
 def detect_imgs(filenames, cfg="cfg/yolo.cfg", weights="yolo.weights", data="cfg/coco.data", thresh=.5, hier_thresh=.5, nms=.45):
@@ -143,7 +143,7 @@ def detect_imgs(filenames, cfg="cfg/yolo.cfg", weights="yolo.weights", data="cfg
         start=time.time()
         r = detect(net, meta, filename, thresh=thresh, hier_thresh=hier_thresh, nms=nms)
         end=time.time()
-        print '({}/{})detection time:{:.4f}'.format(i+1, len(filenames), end-start)
+        print('({}/{})detection time:{:.4f}'.format(i+1, len(filenames), end-start))
         rs.append(r)
     return rs
 
@@ -152,10 +152,10 @@ if __name__ == "__main__":
     #im = load_image("data/wolf.jpg", 0, 0)
     #meta = load_meta("cfg/imagenet1k.data")
     #r = classify(net, meta, im)
-    #print r[:10]
+    #print(r[:10])
     net = load_net("cfg/tiny-yolo.cfg", "tiny-yolo.weights", 0)
     meta = load_meta("cfg/coco.data")
     re = detect(net, meta, "data/dog.jpg", nms=0)
     for objet_id, objet in enumerate(re):
-        print 'objet:{}'.format(objet_id+1)
-        print objet
+        print('objet:{}'.format(objet_id+1))
+        print(objet)
