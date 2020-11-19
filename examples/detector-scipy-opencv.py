@@ -3,7 +3,7 @@
 # OK actually that might not be a great idea, idk, work in progress
 # Use at your own risk. or don't, i don't care
 
-from scipy.misc import imread
+import imageio
 import cv2
 
 def array_to_image(arr):
@@ -41,8 +41,8 @@ meta = dn.load_meta("cfg/coco.data")
 r = dn.detect(net, meta, "data/dog.jpg")
 print(r)
 
-# scipy
-arr= imread('data/dog.jpg')
+# imageio
+arr= imageio.imread('data/dog.jpg')
 im = array_to_image(arr)
 r = detect2(net, meta, im)
 print(r)

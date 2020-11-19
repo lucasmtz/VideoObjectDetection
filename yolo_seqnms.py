@@ -7,7 +7,7 @@ import cPickle as pickle
 import os, sys
 from matplotlib import pyplot as plt
 from PIL import Image
-import scipy.misc
+import imageio
 import yolo_detection
 import visualization_utils as vis_util
 import label_map_util
@@ -285,7 +285,7 @@ if __name__ == "__main__":
         image_process = get_labeled_image(image_path, PATH_TO_LABELS, NUM_CLASSES, np.array(boxes[i]), np.array(classes[i]), np.array(scores[i]))
         #plt.imshow(image_process)
         #plt.show()
-        scipy.misc.imsave('video/output/frame{}.jpg'.format(i), image_process)
+        imageio.imsave('video/output/frame{}.jpg'.format(i), image_process)
         if i%100==0:
             print('finish writing image{}'.format(i))
     save_end=time.time()
