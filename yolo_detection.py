@@ -110,7 +110,7 @@ def classify(net, meta, im):
     return res
 
 def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45):
-    im = load_image(image, 0, 0)
+    im = load_image(image.encode('utf-8'), 0, 0)
     boxes = make_boxes(net)
     probs = make_probs(net)
     num =   num_boxes(net)
