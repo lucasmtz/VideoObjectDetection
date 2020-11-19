@@ -3,7 +3,6 @@ import numpy as np
 import cv2
 import time
 import copy
-import cPickle as pickle
 import os, sys
 from matplotlib import pyplot as plt
 from PIL import Image
