@@ -68,7 +68,7 @@ def save_image_array_as_png(image, output_path):
     output_path: path to which image should be written.
   """
   image_pil = Image.fromarray(np.uint8(image)).convert('RGB')
-  with tf.gfile.Open(output_path, 'w') as fid:
+  with tf.io.gfile.GFile(output_path, 'w') as fid:
     image_pil.save(fid, 'PNG')
 
 
@@ -292,7 +292,7 @@ def draw_bounding_boxes_on_image_tensors(images,
   def draw_boxes(image_boxes_classes_scores):
     """Draws boxes on image."""
     (image, boxes, classes, scores) = image_boxes_classes_scores
-    image_with_boxes = tf.py_func(visualize_boxes_fn,
+    image_with_boxes = tf.py_function(visualize_boxes_fn,
                                   [image, boxes, classes, scores], tf.uint8)
     return image_with_boxes
 
@@ -520,5 +520,5 @@ def add_cdf_image_summary(values, name):
     image = np.fromstring(fig.canvas.tostring_rgb(), dtype='uint8').reshape(
         1, height, width, 3)
     return image
-  cdf_plot = tf.py_func(cdf_plot, [values], tf.uint8)
+  cdf_plot = tf.py_function(cdf_plot, [values], tf.uint8)
   tf.summary.image(name, cdf_plot)
