@@ -125,7 +125,7 @@ def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45):
     free_ptrs(cast(probs, POINTER(c_void_p)), num)
     return res
 
-def detect_img(filename, cfg="cfg/tiny-yolo.cfg", weights="yolov2-tiny-voc.weights", data="cfg/coco.data", thresh=.5, hier_thresh=.5, nms=.45):
+def detect_img(filename, cfg=b"cfg/tiny-yolo.cfg", weights=b"yolov2-tiny-voc.weights", data=b"cfg/coco.data", thresh=.5, hier_thresh=.5, nms=.45):
     net = load_net(cfg, weights, 0)
     meta = load_meta(data)
     start=time.time()
@@ -135,7 +135,7 @@ def detect_img(filename, cfg="cfg/tiny-yolo.cfg", weights="yolov2-tiny-voc.weigh
     print(r)
     return r
 
-def detect_imgs(filenames, cfg="cfg/yolo.cfg", weights="yolo.weights", data="cfg/coco.data", thresh=.5, hier_thresh=.5, nms=.45):
+def detect_imgs(filenames, cfg=b"cfg/yolo.cfg", weights=b"yolo.weights", data=b"cfg/coco.data", thresh=.5, hier_thresh=.5, nms=.45):
     net = load_net(cfg, weights, 0)
     meta = load_meta(data)
     rs = []
@@ -153,9 +153,9 @@ if __name__ == "__main__":
     #meta = load_meta("cfg/imagenet1k.data")
     #r = classify(net, meta, im)
     #print(r[:10])
-    net = load_net("cfg/tiny-yolo.cfg", "yolov2-tiny-voc.weights", 0)
-    meta = load_meta("cfg/coco.data")
-    re = detect(net, meta, "data/dog.jpg", nms=0)
+    net = load_net(b"cfg/tiny-yolo.cfg", b"yolov2-tiny-voc.weights", 0)
+    meta = load_meta(b"cfg/coco.data")
+    re = detect(net, meta, b"data/dog.jpg", nms=0)
     for objet_id, objet in enumerate(re):
         print('objet:{}'.format(objet_id+1))
         print(objet)
