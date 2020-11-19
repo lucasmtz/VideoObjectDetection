@@ -100,7 +100,4 @@ yolo.weights
 darknet
 libdarknet.a
 wget-log
-
-
-
-
+examples/test.py
