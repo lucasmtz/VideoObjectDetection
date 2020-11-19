@@ -1,14 +1,10 @@
-# Seq_nms_YOLO
-
-#### Membres: Yunyun SUN, Yutong YAN, Sixiang XU, Heng ZHANG
-
----
-
+# Video Object Detection using YOLOv2 and Seq-NMS 
+ 
 ## Introduction
 
 ![](img/index.jpg) 
 
-This project combines **YOLOv2**([reference](https://arxiv.org/abs/1506.02640)) and **seq-nms**([reference](https://arxiv.org/abs/1602.08465)) to realise **real time video detection**.
+This project is a re-implementation of the project **seq_nms_yolo**([reference](https://github.com/melodiepupu/seq_nms_yolo)) for object detection in videos. It combines **YOLOv2**([reference](https://arxiv.org/abs/1506.02640)) and **seq-nms**([reference](https://arxiv.org/abs/1602.08465)) to realise **real time video detection**.
 
 ## Steps
 
