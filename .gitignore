@@ -103,7 +103,8 @@ yolo.weights
 darknet
 libdarknet.a
 wget-log
-video/input/
-video/output/
+video/input*/
+video/output*/
 *pkllist.txt
 *test.py
+*.mp4
