@@ -26,14 +26,14 @@ def main():
         else:
             assert False, "unhandled option"
 
-    if not os.path.exists('output'):
+    if not os.path.exists(image_folder):
         print('no output detected')
         sys.exit(2)
 
-    video_name = 'output.mp4'
+    video_name = f'{image_folder}.mp4'
     images = [img for img in os.listdir(image_folder) if img.endswith(".jpg")]
     count = 0
-    for element in os.listdir('output'):
+    for element in os.listdir(image_folder):
         if(str(element).endswith('jpg')):
             count = count + 1
     images = ['frame{}.jpg'.format(i) for i in range(count)]
