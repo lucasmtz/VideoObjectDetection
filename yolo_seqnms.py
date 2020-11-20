@@ -10,6 +10,7 @@ import imageio
 import yolo_detection
 import visualization_utils as vis_util
 import label_map_util
+from glob import glob
 
 CLASSES=("__background__","person","bicycle","car","motorcycle","airplane","bus","train","truck","boat","traffic light","fire hydrant","stop sign","parking meter","bench","bird","cat","dog","horse","sheep","cow","elephant","bear","zebra","giraffe","backpack","umbrella","handbag","tie","suitcase","frisbee","skis","snowboard","sports ball","kite","baseball bat","baseball glove","skateboard","surfboard","tennis racket","bottle","wine glass","cup","fork","knife","spoon","bowl","banana","apple","sandwich","orange","broccoli","carrot","hot dog","pizza","donut","cake","chair","couch","potted plant","bed","dining table","toilet","tv","laptop","mouse","remote","keyboard","cell phone","microwave","oven","toaster","sink","refrigerator","book","clock","vase","scissors","teddy bear","hair drier","toothbrush")
 CONF_THRESH = 0.5
@@ -198,10 +199,11 @@ def deleteLink(dets,links, rootindex, maxpath,thesh):
                     if delete_ind in priorbox:
                         priorbox.remove(delete_ind)
 
-def dsnms(res):
+def dsnms(res, do_snms=True):
     dets=createInputs(res)
-    # links=createLinks(dets)
-    # maxPath(dets,links)
+    if do_snms:
+        links=createLinks(dets)
+        maxPath(dets,links)
     NMS(dets)
     boxes=[[] for i in dets[0]]
     classes=[[] for i in dets[0]]
@@ -267,25 +269,50 @@ if __name__ == "__main__":
     res = yolo_detection.detect_imgs(pkllist, nms=0, thresh=0.25)
     detect_end=time.time()
     print('total detect: {:.4f}s'.format(detect_end - detect_begin))
+    print('-----------------------------------')
+
+    # no_nms
+    no_nms_begin=time.time()
+    no_boxes, no_classes, no_scores = dsnms(res, do_snms=False)
+    no_nms_end=time.time()
+    print('total no_nms: {:.4f}s'.format(no_nms_end - no_nms_begin))
+    print('-----------------------------------')
 
     # nms
     nms_begin=time.time()
     boxes, classes, scores = dsnms(res)
     nms_end=time.time()
     print('total nms: {:.4f}s'.format(nms_end - nms_begin))
+    print('-----------------------------------')
 
-    # save&visualization
+    # save&visualization no seqnms
     save_begin=time.time()
     PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
     NUM_CLASSES = 80
-    if not os.path.exists('video/output'):
-        os.makedirs('video/output')
+    os.makedirs('video/output_no_seqnms', exist_ok=True)
+    for f in glob('video/output_no_seqnms/*'):
+        os.remove(f)
+    for i, image_path in enumerate(pkllist):
+        image_process = get_labeled_image(image_path, PATH_TO_LABELS, NUM_CLASSES, np.array(no_boxes[i]), np.array(no_classes[i]), np.array(no_scores[i]))
+        imageio.imsave('video/output_no_seqnms/frame{}.jpg'.format(i), image_process)
+        if i%100==0:
+            print('finish writing no_seqnms image{}'.format(i))
+    save_end=time.time()
+    print('total writing no_seqnms images: {:.4f}s'.format(save_end - save_begin))
+    print('-----------------------------------')
+
+    # save&visualization seqnms
+    save_begin=time.time()
+    PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
+    NUM_CLASSES = 80
+    os.makedirs('video/output_seqnms', exist_ok=True)
+    for f in glob('video/output_seqnms/*'):
+        os.remove(f)
     for i, image_path in enumerate(pkllist):
         image_process = get_labeled_image(image_path, PATH_TO_LABELS, NUM_CLASSES, np.array(boxes[i]), np.array(classes[i]), np.array(scores[i]))
-        #plt.imshow(image_process)
-        #plt.show()
-        imageio.imsave('video/output/frame{}.jpg'.format(i), image_process)
+        imageio.imsave('video/output_seqnms/frame{}.jpg'.format(i), image_process)
         if i%100==0:
-            print('finish writing image{}'.format(i))
+            print('finish writing seqnms image{}'.format(i))
     save_end=time.time()
-    print('total writing images: {:.4f}s'.format(save_end - save_begin))
+    print('total writing seqnms images: {:.4f}s'.format(save_end - save_begin))
+    print('-----------------------------------')
