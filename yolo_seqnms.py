@@ -254,7 +254,37 @@ def get_labeled_image(image_path, path_to_labels, num_classes, boxes, classes, s
         category_index)
     return image_process
 
-if __name__ == "__main__":
+
+def save_results(res, pkllist, do_snms):
+    if do_snms:
+        output_folder = 'video/output_seqnms'
+    else:
+        output_folder = 'video/output_no_seqnms'
+    # nms
+    nms_begin=time.time()
+    boxes, classes, scores = dsnms(res, do_snms)
+    nms_end=time.time()
+    print('total do_snms={}: {:.4f}s'.format(do_snms, nms_end - nms_begin))
+    print('-----------------------------------')
+
+    # save&visualization no seqnms
+    save_begin=time.time()
+    PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
+    NUM_CLASSES = 80
+    os.makedirs(output_folder, exist_ok=True)
+    for f in glob(f'{output_folder}/*'):
+        os.remove(f)
+    for i, image_path in enumerate(pkllist):
+        image_process = get_labeled_image(image_path, PATH_TO_LABELS, NUM_CLASSES, np.array(boxes[i]), np.array(classes[i]), np.array(scores[i]))
+        imageio.imsave(f'{output_folder}/frame{i}.jpg', image_process)
+        if i%100==0:
+            print(f'finish writing do_snms={do_snms} image{i}')
+    save_end=time.time()
+    print('total writing do_snms={} images: {:.4f}s'.format(do_snms, save_end - save_begin))
+    print('-----------------------------------')
+
+
+def detect(only_snms=True):
     # load image
     load_begin=time.time()
     pkllistfile=open(os.path.join('video', 'pkllist.txt'))
@@ -270,49 +300,12 @@ if __name__ == "__main__":
     detect_end=time.time()
     print('total detect: {:.4f}s'.format(detect_end - detect_begin))
     print('-----------------------------------')
+    if only_snms:
+        save_results(res, pkllist, True)
+    else: # Run both methods   
+        save_results(res, pkllist, False)
+        save_results(res, pkllist, True)
 
-    # no_nms
-    no_nms_begin=time.time()
-    no_boxes, no_classes, no_scores = dsnms(res, do_snms=False)
-    no_nms_end=time.time()
-    print('total no_nms: {:.4f}s'.format(no_nms_end - no_nms_begin))
-    print('-----------------------------------')
 
-    # nms
-    nms_begin=time.time()
-    boxes, classes, scores = dsnms(res)
-    nms_end=time.time()
-    print('total nms: {:.4f}s'.format(nms_end - nms_begin))
-    print('-----------------------------------')
-
-    # save&visualization no seqnms
-    save_begin=time.time()
-    PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
-    NUM_CLASSES = 80
-    os.makedirs('video/output_no_seqnms', exist_ok=True)
-    for f in glob('video/output_no_seqnms/*'):
-        os.remove(f)
-    for i, image_path in enumerate(pkllist):
-        image_process = get_labeled_image(image_path, PATH_TO_LABELS, NUM_CLASSES, np.array(no_boxes[i]), np.array(no_classes[i]), np.array(no_scores[i]))
-        imageio.imsave('video/output_no_seqnms/frame{}.jpg'.format(i), image_process)
-        if i%100==0:
-            print('finish writing no_seqnms image{}'.format(i))
-    save_end=time.time()
-    print('total writing no_seqnms images: {:.4f}s'.format(save_end - save_begin))
-    print('-----------------------------------')
-
-    # save&visualization seqnms
-    save_begin=time.time()
-    PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
-    NUM_CLASSES = 80
-    os.makedirs('video/output_seqnms', exist_ok=True)
-    for f in glob('video/output_seqnms/*'):
-        os.remove(f)
-    for i, image_path in enumerate(pkllist):
-        image_process = get_labeled_image(image_path, PATH_TO_LABELS, NUM_CLASSES, np.array(boxes[i]), np.array(classes[i]), np.array(scores[i]))
-        imageio.imsave('video/output_seqnms/frame{}.jpg'.format(i), image_process)
-        if i%100==0:
-            print('finish writing seqnms image{}'.format(i))
-    save_end=time.time()
-    print('total writing seqnms images: {:.4f}s'.format(save_end - save_begin))
-    print('-----------------------------------')
+if __name__ == "__main__":
+    detect(only_snms=False)
