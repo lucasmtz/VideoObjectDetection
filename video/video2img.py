@@ -5,7 +5,20 @@ import glob
 def usage():
     print('python video2img.py -i <video file>')
 
-def main():
+def generate_pklllist(input_folder):
+    count = 0
+    for element in os.listdir(input_folder):
+        if(str(element).endswith('jpg')):
+            count = count + 1
+
+    string = ''
+    for i in range(count):
+        string += f'video/{input_folder}/frame{i}.jpg\n'
+
+    with open('pkllist.txt', 'w') as f:
+        f.write(string)
+
+def main(input_folder='input'):
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hi:v", ["help", "input="])
     except getopt.GetoptError as err:
@@ -26,8 +39,9 @@ def main():
         else:
             assert False, "unhandled option"
 
-    if not os.path.exists('input'):
-        os.makedirs('input')
+    os.makedirs(input_folder, exist_ok=True)
+    for f in os.listdir(input_folder):
+        os.remove(f)
 
     vidcap = cv2.VideoCapture(file_name)
     success,image = vidcap.read()
@@ -37,8 +51,10 @@ def main():
       if not success:
           break
       print('Read a new frame: {}'.format(count))
-      cv2.imwrite(os.path.join('input', 'frame{}.jpg'.format(count)), image)     # save frame as JPEG file
+      cv2.imwrite(os.path.join(input_folder, 'frame{}.jpg'.format(count)), image)     # save frame as JPEG file
       count += 1
+    generate_pklllist(input_folder)
+    
 
 if __name__ == "__main__":
    main()
