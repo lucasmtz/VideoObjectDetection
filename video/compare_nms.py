@@ -51,9 +51,9 @@ def show_comparison(yolo_dir, nms_dir, n_stacks=5, n_comparisons=1, imshow=False
             cv2.waitKey(0)
             cv2.destroyAllWindows()
         else:
-            os.makedirs("SeqNMS_results", exist_ok=True)
+            os.makedirs("SeqNMS_comparison", exist_ok=True)
             cv2.imwrite(
-                f"SeqNMS_results/YoloV2 vs YoloV2+SeqNMS_{comparison}.png",
+                f"SeqNMS_comparison/YoloV2 vs YoloV2+SeqNMS_{comparison}.png",
                 np.hstack(
                     (
                         vstack_imgs(yolo_dir[stack : stack + n_stacks]),

@@ -105,4 +105,4 @@ video/output*/
 video/*pkllist.txt
 *test.py
 video/*.mp4
-video/SeqNMS_results/
+video/SeqNMS_comparison/
