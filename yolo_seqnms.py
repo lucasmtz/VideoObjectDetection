@@ -35,7 +35,7 @@ def createInputs(res):
                 cls_boxes[box_ind][1] = box[2][1]-box[2][3]/2
                 cls_boxes[box_ind][2] = box[2][0]+box[2][2]/2
                 cls_boxes[box_ind][3] = box[2][1]+box[2][3]/2
-                if box[0]==cls:
+                if str(box[0],'utf-8')==cls:
                     cls_scores[box_ind][0] = box[1]
                 else:
                     cls_scores[box_ind][0] = 0.00001
@@ -200,8 +200,8 @@ def deleteLink(dets,links, rootindex, maxpath,thesh):
 
 def dsnms(res):
     dets=createInputs(res)
-    links=createLinks(dets)
-    maxPath(dets,links)
+    # links=createLinks(dets)
+    # maxPath(dets,links)
     NMS(dets)
     boxes=[[] for i in dets[0]]
     classes=[[] for i in dets[0]]
@@ -278,13 +278,13 @@ if __name__ == "__main__":
     save_begin=time.time()
     PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
     NUM_CLASSES = 80
-    if not os.path.exists('video/output'):
-        os.makedirs('video/output')
+    if not os.path.exists('video/output2'):
+        os.makedirs('video/output2')
     for i, image_path in enumerate(pkllist):
         image_process = get_labeled_image(image_path, PATH_TO_LABELS, NUM_CLASSES, np.array(boxes[i]), np.array(classes[i]), np.array(scores[i]))
         #plt.imshow(image_process)
         #plt.show()
-        imageio.imsave('video/output/frame{}.jpg'.format(i), image_process)
+        imageio.imsave('video/output2/frame{}.jpg'.format(i), image_process)
         if i%100==0:
             print('finish writing image{}'.format(i))
     save_end=time.time()
