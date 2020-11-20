@@ -94,6 +94,9 @@ obj/
 # results
 results/
 
+# tests
+tests/
+
 # weigths, libs and logs
 yolov2-tiny-voc.weights
 yolo.weights
