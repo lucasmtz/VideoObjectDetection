@@ -91,9 +91,6 @@ target/
 # obj
 obj/
 
-# results
-results/
-
 # tests
 tests/
 
@@ -105,7 +102,7 @@ libdarknet.a
 wget-log
 video/input*/
 video/output*/
-*pkllist.txt
+video/*pkllist.txt
 *test.py
-*.mp4
-SeqNMS_results/
+video/*.mp4
+video/SeqNMS_results/
