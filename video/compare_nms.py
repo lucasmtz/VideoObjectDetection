@@ -67,5 +67,5 @@ def show_comparison(yolo_dir, nms_dir, n_stacks=5, n_comparisons=1, imshow=False
 
 if __name__ == "__main__":
     show_comparison(
-        "tests", "output", n_stacks=5, n_comparisons=1000, imshow=False
+        "output_no_seqnms", "output_seqnms", n_stacks=5, n_comparisons=1000, imshow=False
     )
