@@ -278,13 +278,13 @@ if __name__ == "__main__":
     save_begin=time.time()
     PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
     NUM_CLASSES = 80
-    if not os.path.exists('video/output2'):
-        os.makedirs('video/output2')
+    if not os.path.exists('video/output'):
+        os.makedirs('video/output')
     for i, image_path in enumerate(pkllist):
         image_process = get_labeled_image(image_path, PATH_TO_LABELS, NUM_CLASSES, np.array(boxes[i]), np.array(classes[i]), np.array(scores[i]))
         #plt.imshow(image_process)
         #plt.show()
-        imageio.imsave('video/output2/frame{}.jpg'.format(i), image_process)
+        imageio.imsave('video/output/frame{}.jpg'.format(i), image_process)
         if i%100==0:
             print('finish writing image{}'.format(i))
     save_end=time.time()

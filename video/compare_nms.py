@@ -1,3 +1,4 @@
+import os
 import re
 from glob import glob
 
@@ -50,8 +51,9 @@ def show_comparison(yolo_dir, nms_dir, n_stacks=5, n_comparisons=1, imshow=False
             cv2.waitKey(0)
             cv2.destroyAllWindows()
         else:
+            os.makedirs("SeqNMS_results", exist_ok=True)
             cv2.imwrite(
-                "YoloV2 vs YoloV2+SeqNMS.png",
+                f"SeqNMS_results/YoloV2 vs YoloV2+SeqNMS_{comparison}.png",
                 np.hstack(
                     (
                         vstack_imgs(yolo_dir[stack : stack + n_stacks]),
@@ -65,6 +67,5 @@ def show_comparison(yolo_dir, nms_dir, n_stacks=5, n_comparisons=1, imshow=False
 
 if __name__ == "__main__":
     show_comparison(
-        "video/output", "video/tests", n_stacks=5, n_comparisons=1, imshow=False
+        "tests", "output", n_stacks=5, n_comparisons=1000, imshow=False
     )
-
